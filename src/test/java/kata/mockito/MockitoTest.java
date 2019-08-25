@@ -86,4 +86,14 @@ public class MockitoTest {
         verify(spy).add("one");
         verify(spy).add("two");
     }
+
+    @Test
+    public void important_gotcha_on_spying_real_objects_using_when_then_return() {
+        List spy = spy(new LinkedList());
+
+        //Impossible: real method is called so spy.get(0) throws
+        //  IndexOutOfBoundsException (the list is yet empty)
+        thrown.expect(IndexOutOfBoundsException.class);
+        when(spy.get(0)).thenReturn("foo");
+    }
 }
