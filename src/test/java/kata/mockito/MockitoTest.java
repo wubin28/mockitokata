@@ -96,4 +96,14 @@ public class MockitoTest {
         thrown.expect(IndexOutOfBoundsException.class);
         when(spy.get(0)).thenReturn("foo");
     }
+
+    @Test
+    public void important_gotcha_on_spying_real_objects_using_do_return_when() {
+        List spy = spy(new LinkedList());
+
+        //You have to use doReturn() for stubbing
+        doReturn("foo").when(spy).get(0);
+
+        assertEquals("foo", spy.get(0));
+    }
 }
